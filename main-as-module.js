@@ -5,8 +5,6 @@ module.exports = function (config) {
   const fs = require('fs');
   const app = express()
 
-  const config = require("../../common/config.js");
-
   const mysql = require('mysql');
   const pool = mysql.createPool({
     connectionLimit: 10,
@@ -36,5 +34,3 @@ module.exports = function (config) {
     console.log("Listening on " + PORT + "...");
   });
 }
-
-
