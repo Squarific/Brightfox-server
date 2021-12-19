@@ -15,11 +15,17 @@ const SELECT_QUERY_LATEST_VERSION = `
     ORDER BY major DESC, minor DESC, patch DESC 
     LIMIT 1
     ; `;
-const INSERT_QUERY = "INSERT INTO `versions` (pluginuuid, major, minor, patch, releasenotes, source) VALUES (UUID_TO_BIN(?), ?, ?, ?, ?, ?)";
+const INSERT_QUERY = "INSERT INTO `versions` (pluginuuid, major, minor, patch, releasenotes) VALUES (UUID_TO_BIN(?), ?, ?, ?, ?)";
 
 const GENERIC_DB_ERROR = {
     errors: [{
         msg: "Internal database error"
+    }]
+};
+
+const GENERIC_FILE_ERROR = {
+    errors: [{
+        msg: "Internal file error"
     }]
 };
 
@@ -73,13 +79,21 @@ module.exports = (database) => {
         })
 
         function addNewVerwion(newVersion) {
-            database.query(INSERT_QUERY, [req.params.pluginuuid, newVersion.major, newVersion.minor, newVersion.patch, req.body.releasenotes, req.body.source], (err, result) => {
+            database.query(INSERT_QUERY, [req.params.pluginuuid, newVersion.major, newVersion.minor, newVersion.patch, req.body.releasenotes], (err, result) => {
                 if (err) {
                     console.log("New plugin database error", err, req.params.pluginuuid);
                     return res.status(504).json(GENERIC_DB_ERROR);
                 }
-                return res.status(200).json({
-                    newversion: `${newVersion.major}.${newVersion.minor}.${newVersion.patch}`
+
+                fs.writeFile(path.join(__dirname, 'pluginsources', req.params.pluginuuid + 'v' + newVersion.major + '.' + newVersion.minor + '.' + newVersion.patch + '.js'), req.body.source, err => {
+                    if (err) {
+                        console.log("New plugin file error", err, req.params.pluginuuid);
+                        return res.status(504).json(GENERIC_FILE_ERROR);
+                    }
+
+                    return res.status(200).json({
+                        newversion: `${newVersion.major}.${newVersion.minor}.${newVersion.patch}`
+                    });
                 });
             });
         }
