@@ -2,6 +2,7 @@ module.exports = function (config) {
   const express = require('express')
   const https = require('https')
   const cors = require('cors')
+  const path = require('path')
   const fs = require('fs');
   const app = express()
 
@@ -28,6 +29,7 @@ module.exports = function (config) {
 
   app.use('/plugins', require('./routes/plugins/_')(pool));
   app.use('/versions', require('./routes/versions/_')(pool));
+  app.use('/sources', express.static(path.join(__dirname, 'routes/versions/pluginsources')));
 
   const PORT = config.port;
   https.createServer(options, app).listen(PORT, '0.0.0.0', () => {
