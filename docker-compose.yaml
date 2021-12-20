@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  brightfox:
+    build:
+      dockerfile: ./Dockerfile
+    depends_on:
+      - "database"
+    ports:
+      - "0.0.0.0:8655:8655"
+  database:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: pluginmods
+      MYSQL_DATABASE: pluginmods
+    volumes:
+      #- ./data/mysql:/var/lib/mysql
+      - ./database/:/docker-entrypoint-initdb.d 
