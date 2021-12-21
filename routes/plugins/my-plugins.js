@@ -44,7 +44,14 @@ module.exports = (database) => {
             }
 
             return res.status(200).json({
-                plugins: result
+                plugins: result.map((pl) => { return {
+                    uuid: pl.uuid.toString(),
+                    useruuid: pl.useruuid.toString(),
+                    name: pl.name,
+                    description: pl.description,
+                    creation: pl.creation,
+                    updatedatetime: pl.updatedatetime
+                }})
             });
         });
     });
