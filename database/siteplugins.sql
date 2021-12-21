@@ -58,7 +58,6 @@ CREATE TABLE IF NOT EXISTS `versions` (
     patch TINYINT UNSIGNED NOT NULL,
 
     releasenotes TEXT NOT NULL,
-    source TEXT NOT NULL,
 
     verified BOOLEAN DEFAULT FALSE NOT NULL,
 
