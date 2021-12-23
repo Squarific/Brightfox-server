@@ -10,7 +10,7 @@ const GENERIC_DB_ERROR = {
 };
 
 module.exports = (database) => {
-    router.get('/:pluginUuid/:unverified', [
+    router.get('/:pluginUuid', [
         param('pluginUuid').isLength({ min: 36, max: 36 })
     ], async (req, res) => {
         const errors = validationResult(req);
