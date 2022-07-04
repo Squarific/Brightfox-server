@@ -29,6 +29,15 @@ brightfoxServer({
 
 ### /plugins/new
 
-### /plugins/retrive
+### /plugins/retrieve
 
 ### /plugins/update
+
+
+### /versions/list
+
+### /versions/new
+
+### /versions/retrieve
+
+### /versions/update
